@@ -9,12 +9,14 @@ class App extends Component {
     this.injectWidget();
   }
 
+// this is the first step: we get the seesionId from gordian server
   async getId () {
     let response = await fetch ("https://test-ancil-overlay.herokuapp.com/v1.2/funnel/cache.js?agent_id=test&flight_string=SFO*2019-10-15T07:20*CQ*123*JFK*2019-10-15T08:45&adults=1");
     let body = await response.text();
     return JSON.parse(body.slice(22,-2)).session_id
   }
 
+// we inject gordian ancillary js code at the in componentDidMount so its ready
   injectWidget(){
     var id = parseInt(this.state.id)-1;
     const script = document.createElement("script");
@@ -24,6 +26,7 @@ class App extends Component {
     document.body.appendChild(script);
   }
 
+// this function checks DOM's result variable to see if it has been updated by gordian ancillary
   checkout(){
     if (window.result == null){
       alert("cart is empty! please click above link to book first.")
